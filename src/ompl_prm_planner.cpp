@@ -54,7 +54,7 @@ unsigned char PRMPlanner::getCost(double wx, double wy) const
   return inBounds ? _costmap->data[my * width + mx] : costmap_2d::NO_INFORMATION;
 }
 
-bool PRMPlanner::isStateValid(const ob::State *state, const ob::SpaceInformation *si, costmap_2d::Costmap2DROS* costmap_ros)
+bool PRMPlanner::isStateValid(const ob::State *state, const ob::SpaceInformation *si)
 {
   // OMPL durumunu bir ROS konumuna dönüştürme
   const auto* se2state = state->as<ob::SE2StateSpace::StateType>();
@@ -93,7 +93,7 @@ void PRMPlanner::initialize(std::string name, costmap_2d::Costmap2DROS* costmap_
 
     // Durum geçerliliğini kontrol etmek için bir geçerlilik denetleyici (validity checker) ayarlayın
     space_information->setStateValidityChecker(
-        [this, space_information, &costmap_ros](const ob::State *state) { return isStateValid(state, space_information.get(), costmap_ros); }
+        [this, space_information](const ob::State *state) { return isStateValid(state, space_information.get()); }
     );
     // set sampler algorithm
     space_information->setValidStateSamplerAllocator([](const ob::SpaceInformation *si) -> std::shared_ptr<ob::ValidStateSampler> {

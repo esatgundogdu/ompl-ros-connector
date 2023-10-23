@@ -42,7 +42,7 @@ public:
   void costmapCallback(const nav_msgs::OccupancyGrid::ConstPtr& costmap_msg);
 
   private:
-    bool isStateValid(const ob::State *state, const ob::SpaceInformation *si, costmap_2d::Costmap2DROS* costmap_ros);
+    bool isStateValid(const ob::State *state, const ob::SpaceInformation *si);
     bool worldToMap(double wx, double wy, unsigned int& mx, unsigned int& my) const;
     unsigned char getCost(double wx, double wy) const;
 
