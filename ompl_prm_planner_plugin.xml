@@ -1,0 +1,7 @@
+<library path="lib/libompl_prm_planner">
+  <class name="ompl_prm_planner/PRMPlanner" type="ompl_prm_planner::PRMPlanner" base_class_type="nav_core::BaseGlobalPlanner">
+    <description>
+      A global planner plugin using the PRM algorithm from OMPL.
+    </description>
+  </class>
+</library>
