@@ -18,6 +18,7 @@
 #include <ompl/base/objectives/PathLengthOptimizationObjective.h>
 #include <ompl/base/samplers/BridgeTestValidStateSampler.h>
 #include <ompl/geometric/planners/rrt/RRTstar.h>
+#include <ompl/geometric/planners/rrt/RRT.h>
 #include "ompl/util/Console.h"
 
 #include <vector>
@@ -49,7 +50,7 @@ public:
   private:
     bool _initialized = false;
     std::string _frame_id;
-    const unsigned int _occupancy_threshold = 70; // 0-100 interval
+    const unsigned int _occupancy_threshold = 60; // 0-100 interval
 
     ros::Subscriber _costmapSub;
     nav_msgs::OccupancyGrid::ConstPtr _costmap;

@@ -102,6 +102,7 @@ void PRMPlanner::initialize(std::string name, costmap_2d::Costmap2DROS* costmap_
 
     // space_information'ı kullanarak PRM planlayıcı örneğini oluşturun
     _planner = std::make_shared<og::PRM>(space_information);
+    // _planner = std::make_shared<og::RRT>(space_information);
 
     _simple_setup = std::make_unique<ompl::geometric::SimpleSetup>(space_information);
     _simple_setup->setPlanner(_planner);
@@ -145,15 +146,15 @@ bool PRMPlanner::makePlan(const geometry_msgs::PoseStamped& start,
   ob::PlannerStatus status = _simple_setup->solve(3.0);
 
   // solution found
-  if (status == ob::PlannerStatus::EXACT_SOLUTION || status == ob::PlannerStatus::APPROXIMATE_SOLUTION) 
+  if (status == ob::PlannerStatus::EXACT_SOLUTION) 
   {
-    if (status == ob::PlannerStatus::EXACT_SOLUTION)
-      ROS_INFO("Bulunan çözüm: exact");
-    else
-      ROS_INFO("Bulunan çözüm: approximate");
+    // if (status == ob::PlannerStatus::EXACT_SOLUTION)
+    //   ROS_INFO("Bulunan çözüm: exact");
+    // else
+    //   ROS_INFO("Bulunan çözüm: approximate");
       
     og::PathGeometric path = _simple_setup->getSolutionPath();
-    path.interpolate(_costmap->info.resolution); // Yolu istenilen çözünürlüğe göre ara değerlerle doldurun
+    //path.interpolate(_costmap->info.resolution); // Yolu istenilen çözünürlüğe göre ara değerlerle doldurun
 
     // OMPL yolu ROS mesajlarına dönüştür
     for (std::size_t path_idx = 0; path_idx < path.getStateCount(); path_idx++)
@@ -168,6 +169,11 @@ bool PRMPlanner::makePlan(const geometry_msgs::PoseStamped& start,
 
       plan.push_back(new_pose);
     }
+    // plan.push_back(goal); // gereksiz oldugunu debug ederek anladik
+
+    ROS_INFO_STREAM("DEBUG1: " << plan[plan.size()-1].pose.position.x << ", " << plan[plan.size()-1].pose.position.y);
+    ROS_INFO_STREAM("DEBUG2: " << plan[plan.size()-2].pose.position.x << ", " << plan[plan.size()-2].pose.position.y);
+    ROS_INFO_STREAM("DEBUG3: " << goal.pose.position.x << ", " << goal.pose.position.y); 
 
     return true;
   } 
