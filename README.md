@@ -33,7 +33,7 @@ This repository contains a move_base plugin for integrating OMPL (Open Motion Pl
 
 ## Known Issues / TODO
 
-## Contributing
+## 🏆 Contributing
 Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are greatly appreciated.
 
 - Fork the Project
@@ -42,6 +42,6 @@ Contributions are what make the open-source community such an amazing place to l
 - Push to the Branch (**git push origin feature/AmazingFeature**)
 - Open a Pull Request
 
-## License
+## 🪪 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
