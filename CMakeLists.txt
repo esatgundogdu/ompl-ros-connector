@@ -11,12 +11,17 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   tf
   std_msgs
+  dynamic_reconfigure
 )
 
 list(APPEND CMAKE_PREFIX_PATH "/home/saslab/omplapp/ompl/")
 find_package(ompl REQUIRED)
 include_directories(${OMPL_INCLUDE_DIRS})
 link_directories(${OMPL_LIBRARY_DIRS})
+
+generate_dynamic_reconfigure_options(
+    cfg/PlannerParams.cfg
+)
 
 catkin_package(
   INCLUDE_DIRS include
