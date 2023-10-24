@@ -21,6 +21,18 @@ namespace ompl_prm_planner
         _costmap = costmap_msg;
     }
 
+    void OmplPRMPlanner::publishPlan(const std::vector<geometry_msgs::PoseStamped> &plan)
+    {
+        nav_msgs::Path path_msg;
+        path_msg.header.stamp = ros::Time::now();
+        path_msg.header.frame_id = _frame_id;
+        for (const auto& pose : plan)
+        {
+            path_msg.poses.push_back(pose);
+        }
+        _path_pub.publish(path_msg);
+    }
+
     bool OmplPRMPlanner::worldToMap(double wx, double wy, unsigned int &mx, unsigned int &my) const
     {
         double origin_x, origin_y, resolution;
@@ -105,9 +117,13 @@ namespace ompl_prm_planner
         {
             _frame_id = costmap_ros->getGlobalFrameID();
 
-            // topic subscription
             ros::NodeHandle private_nh("~/" + name);
+            
+            // costmap subscriber
             _costmapSub = private_nh.subscribe("/move_base/global_costmap/costmap", 1, &OmplPRMPlanner::costmapCallback, this);
+
+            // path publisher
+            _path_pub = private_nh.advertise<nav_msgs::Path>("global_plan", 1, true);
 
             // dynamic reconfigure
             dynamic_reconfigure::Server<ompl_prm_planner::PlannerParamsConfig>::CallbackType cb;
@@ -178,9 +194,8 @@ namespace ompl_prm_planner
                 plan.push_back(new_pose);
             }
 
-            ROS_INFO_STREAM("DEBUG1: " << plan[plan.size() - 1].pose.position.x << ", " << plan[plan.size() - 1].pose.position.y);
-            ROS_INFO_STREAM("DEBUG2: " << plan[plan.size() - 2].pose.position.x << ", " << plan[plan.size() - 2].pose.position.y);
-            ROS_INFO_STREAM("DEBUG3: " << goal.pose.position.x << ", " << goal.pose.position.y);
+            // publish the path for visualization & debugging
+            publishPlan(plan);
 
             return true;
         }

@@ -1,12 +1,12 @@
-#include <nav_core/base_global_planner.h>
-
 #include <ros/ros.h>
-#include <geometry_msgs/PoseStamped.h>
 #include <nav_core/base_global_planner.h>
-#include <costmap_2d/costmap_2d_ros.h>
 #include <tf/tf.h>
 #include <tf/transform_datatypes.h>
+#include <costmap_2d/costmap_2d_ros.h>
 #include <pluginlib/class_list_macros.h>
+
+#include <geometry_msgs/PoseStamped.h>
+#include <nav_msgs/Path.h>
 
 #include <dynamic_reconfigure/server.h>
 #include <ompl_ros_connector/PlannerParamsConfig.h>
@@ -56,23 +56,26 @@ public:
      * @brief Checks given state and returns true if it is valid. Checks state cost, if it is smaller than occupancy_threshold param it is valid.
     */
     bool isStateValid(const ob::State *state, const ob::SpaceInformation *si);
-    /*
+    /**
      * @brief fills mx, my values. Returns true if coordinates are in legal bounds, false otherwise.
      */
     bool worldToMap(double wx, double wy, unsigned int& mx, unsigned int& my) const;
-    /*
+    /**
      * @brief returns costmap value if given coordinates are in legal border. Otherwise, returns NO_INFORMATION
      */
     unsigned char getCost(double wx, double wy) const;
+
+    void publishPlan(const std::vector<geometry_msgs::PoseStamped> &plan);
 
   private:
     bool _initialized = false;
     std::string _frame_id;
     unsigned int _occupancy_threshold; // 0-100 interval
 
-    // costmap subscription
+    // subscriber & publisher
     ros::Subscriber _costmapSub;
     nav_msgs::OccupancyGrid::ConstPtr _costmap;
+    ros::Publisher _path_pub;
 
     // dynamic reconfigure
     dynamic_reconfigure::Server<ompl_prm_planner::PlannerParamsConfig>* dsrv_;
