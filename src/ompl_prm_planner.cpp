@@ -172,11 +172,6 @@ namespace ompl_prm_planner
         // solution found
         if (status == ob::PlannerStatus::EXACT_SOLUTION)
         {
-            // if (status == ob::PlannerStatus::EXACT_SOLUTION)
-            //   ROS_INFO("Bulunan çözüm: exact");
-            // else
-            //   ROS_INFO("Bulunan çözüm: approximate");
-
             og::PathGeometric path = _simple_setup->getSolutionPath();
             // path.interpolate(_costmap->info.resolution); // Fill the path with intermediate values according to given resolution
 

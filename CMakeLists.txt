@@ -14,7 +14,7 @@ find_package(catkin REQUIRED COMPONENTS
   dynamic_reconfigure
 )
 
-list(APPEND CMAKE_PREFIX_PATH "/home/saslab/omplapp/ompl/")
+# list(APPEND CMAKE_PREFIX_PATH "/home/saslab/omplapp/ompl/")
 find_package(ompl REQUIRED)
 include_directories(${OMPL_INCLUDE_DIRS})
 link_directories(${OMPL_LIBRARY_DIRS})
